@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-  ==================
-  SCROLL ALL THE WAY DOWN, THE INSTRUCTIONS ARE INSIDE THE <script> TAG!
-  ==================
-!-->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -63,27 +58,28 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  function removeClass(e) {
+    if (e.propertyName !== 'transform') return;
+    e.target.classList.remove('playing');
+  }
 
-// Write a function to actually play the correct audio element.
-// In addition, this function should add the class 'playing' to the correct '.key' element
-function playSound(event) {
-  
-}
+  function playSound(e) {
+    var audio = document.querySelector('audio[data-key="' + e.keyCode + '"]');
+    var key = document.querySelector('div[data-key="' + e.keyCode + '"]');
+    if (!audio) return;
 
-// Write a function that removes the class 'playing' from the current element
-// The current element is referenced as 'event.target'
-function removeClass(event) {
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
 
-}
+  var keyElements = document.querySelectorAll('.key');
+  for (var i = 0; i < keyElements.length; i++) {
+    keyElements[i].addEventListener('transitionend', removeClass);
+  }
 
-// Now make the browser listen to the 'keydown' event and make him execute your 'playSound' function
-
-
-// As an extra, make ALL elements containing the class '.key' listen to the 'transitionEnd' event.
-// As a callback, the function 'removeClass' has to be executed
-
+  window.addEventListener('keydown', playSound);
 </script>
-
 
 </body>
 </html>
